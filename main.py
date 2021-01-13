@@ -7,13 +7,18 @@ def main():
     suma.dotsPerInch()
     suma.callRatio()
     suma.fromMBToGB()
+
+
     # suma.printDescription()
-    # suma.getHistogram()
+    # suma.getPricesHistogram()
     # suma.dataHeatMap()
-    # suma.getCategoricalCorrelation()
+    # suma.getCategoricalCorrelation('bluetooth')
+    # suma.plotRelationshipWithPrice('resolution')
     # suma.threeCorrelatedFeatures()
-    # suma.ordinalToNumerical()
+    suma.ordinalToNumerical()
     suma.nominalToBinary()
+    suma.dataHeatMap()
+    # suma.saveIntoCsvFile()
 
 
 if __name__ == '__main__':
