@@ -12,7 +12,8 @@ def main():
     # suma.dataHeatMap()
     # suma.getCategoricalCorrelation()
     # suma.threeCorrelatedFeatures()
-    suma.ordinalToNumerical()
+    # suma.ordinalToNumerical()
+    suma.nominalToBinary()
 
 
 if __name__ == '__main__':

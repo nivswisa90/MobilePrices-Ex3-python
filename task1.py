@@ -57,14 +57,16 @@ class Summary:
         plt.show()
 
     def getCategoricalCorrelation(self):
+        #Need to do to every categorical
         # csv_oh = pd.concat([self.csv,pd.get_dummies(self.csv['bluetooth'])],axis=1)
-        csv_oh = pd.concat([self.csv, pd.get_dummies(self.csv['wifi'])], axis=1)
+        csv_oh = pd.concat([self.csv, pd.get_dummies(self.csv['sim'])], axis=1)
         corr = csv_oh.corr()
         plt.figure(figsize=(8, 8))
         sns.heatmap(corr, annot=True, cmap="coolwarm")
         plt.show()
 
     def threeCorrelatedFeatures(self):
+        #Need to check again
         ram = pd.qcut(self.csv['ram'],4)
         battery = pd.qcut(self.csv['battery_power'], 4)
         pivot = self.csv.pivot_table(index=[battery,'battery_power'],columns=['ram',ram],
@@ -81,11 +83,39 @@ class Summary:
                                      ordered=True,
                                      categories=wifi_dict
                                      )
-        self.csv['wifi_o'] = wifi.codes
+        self.csv['wifi_ord'] = wifi.codes
 
         cores_dict = ['single','dual','triple','quad','penta','hexa','hepta','octa']
         cores = pd.Categorical(self.csv.cores,
                                ordered=True,
                                categories=cores_dict)
-        self.csv['cores_o'] = cores.codes
+        self.csv['cores_ord'] = cores.codes
+
+        gen_dict = [2,3,4]
+        gen = pd.Categorical(self.csv.gen,
+                             ordered=True,
+                             categories=gen_dict)
+        self.csv['gen_ord'] = gen.codes
+
+        speed_dict = ['low','medium','high']
+        speed = pd.Categorical(self.csv.speed,
+                               ordered=True,
+                               categories=speed_dict)
+
+        self.csv['speed_ord'] = speed.codes
+
+        sim_dict = ['Single','Dual']
+        sim = pd.Categorical(self.csv.sim,
+                             ordered=True,
+                             categories=sim_dict)
+        self.csv['sim_ord'] = sim.codes
+
+        print(self.csv)
+
+    def nominalToBinary(self):
+        bluetooth = pd.get_dummies(self.csv.bluetooth, prefix='bluetooth',drop_first=True)
+        self.csv[str(bluetooth.columns.array[0]) + '_bin'] = bluetooth
+
+        screen = pd.get_dummies(self.csv.screen, prefix='screen',drop_first=True)
+        self.csv[str(screen.columns.array[0]) + '_bin'] = screen
         print(self.csv)
