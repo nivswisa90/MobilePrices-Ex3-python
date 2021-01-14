@@ -13,7 +13,7 @@ def main():
     # suma.getPricesHistogram()
     # suma.dataHeatMap()
     # suma.plotRelationshipWithPrice('resolution')
-    suma.threeCorrelatedFeatures()
+    # suma.threeCorrelatedFeatures()
     # suma.ordinalToNumerical()
     # suma.nominalToBinary()
     # suma.dataHeatMap()

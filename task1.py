@@ -28,7 +28,7 @@ class Summary:
 
     def fromMBToGB(self):
         # Change the memory column to hold the memory in GB instead of MB
-        self.csv['memory'] = self.csv['memory'] / 1000
+        self.csv['memory'] = self.csv['memory'] / 1024
 
     def printDescription(self):
         # Show table description
@@ -149,3 +149,5 @@ class Summary:
         # write the data frame into a csv file
         self.deleteRedundantIndex()
         self.csv.to_csv('mobile_prices_converted.csv', sep=',')
+
+    
