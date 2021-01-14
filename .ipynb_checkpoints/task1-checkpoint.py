@@ -1,9 +1,14 @@
+import export as export
 import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 plt.style.use('classic')
 import seaborn as sns
 import numpy as np
+import os
+# os.environ["PROJ_LIB"]='/srv/conda/envs/notebook/lib/python3.7/site-packages/mpl_toolkits/basemap'
+os.environ["PROJ_LIB"]='/Users/martinmazas/Desktop/shenkar/3rd year/python/Mobile-prices-Ex3-python/venv/bin/python'
+from mpl_toolkits.basemap import Basemap
 
 
 class Summary:
@@ -45,10 +50,23 @@ class Summary:
         # Plot a correlation heatmap of the data set
         corr = self.csv.corr()
         mask = np.triu(np.ones_like(corr, dtype=bool))
+        f, ax = plt.subplots(figsize=(7, 6))
         cmap = sns.diverging_palette(200, 10, as_cmap=True)
         sns.heatmap(corr, mask=mask, cmap=cmap, center=0,
                     square=True, linewidths=.5)
+        plt.savefig('heatmap.png')
         plt.show()
+        # mask = np.triu(np.ones_like(corr, dtype=bool))
+        # f, ax = plt.subplots(figsize=(8, 6))
+        # cmap = sns.diverging_palette(200, 10, as_cmap=True)
+        # # sns.heatmap(corr, mask=mask, cmap=cmap, center=0,
+        # #             square=True, linewidths=.5)
+        # sns.heatmap(corr,
+        #             xticklabels=corr.columns,
+        #             yticklabels=corr.columns)
+        # plt.figure(figsize=(8,6))
+        # sns.heatmap(corr,annot=True,cmap="coolwarm")
+        # plt.show()
 
     def getCategoricalCorrelation(self, features):
         # Checks if a categorical feature has correlation with the price
@@ -62,7 +80,7 @@ class Summary:
         plt.show()
 
     def plotRelationshipWithPrice(self, feature):
-        # For each feature correlated with the price, plot its relationship with price
+        # Need to check what to do with wifi
         sns.regplot(x=feature, y="price", data=self.csv, scatter_kws={"color": "black"}, line_kws={"color": "red"})
         plt.title("price " + feature + " relationship")
         plt.savefig('plot.png')
@@ -144,17 +162,35 @@ class Summary:
         sns.pairplot(tmp_dataframe, kind='reg', height=5, corner=True, plot_kws={'line_kws': {'color': 'red'}})
         plt.show()
 
-    def plotRelationshipBetweenWidthHeightPriceCore(self):
-        # Plot the relationship between px_width, px_height, price and core. Px_width and px_height should be
-        # the X and Y coordinates respectively
-        width, height = self.csv.px_width, self.csv.px_height
-        price, cores = self.csv.price, self.csv.cores_ord
+    def testFunc(self):
+        fig = plt.figure(figsize=(8, 8))
+        m = Basemap(projection='lcc', resolution='c',
+                    lat_0=37.5, lon_0=-119,
+                    width=1E6, height=1.2E6)
+        m.shadedrelief()
+        m.drawcoastlines(color='gray')
+        m.drawcountries(color='gray')
+        m.drawstates(color='gray')
 
-        plt.figure(figsize=(20, 15))
+        # 2. scatter city data, with color reflecting population
+        # and size reflecting area
+        m.scatter(lon, lat, latlon=True,
+                  c=np.log10(population), s=area,
+                  cmap='Reds', alpha=0.5)
 
-        plt.scatter(width, height, c=price, s=cores * 130, alpha=0.5, linewidths=0, cmap='coolwarm')
-        plt.title('Plot of pixel width and height with price and cores')
-        plt.xlabel('pixel width')
-        plt.ylabel('pixel_height')
-        plt.colorbar(label='price')
+        # 3. create colorbar and legend
+        plt.colorbar(label=r'$\log_{10}({\rm population})$')
+        plt.clim(3, 7)
+
+        # Map (long, lat) to (x, y) for plotting
+        for i, r in to_plot.iterrows():
+            x, y = m(r['longd'], r['latd'])
+            plt.plot(x, y, 'ok', markersize=5)
+            plt.text(x, y, " " + r['city'], fontsize=8);
+        # make legend with dummy points
+        for a in [100, 300, 500]:
+            plt.scatter([], [], c='k', alpha=0.5, s=a,
+                        label=str(a) + ' km$^2$')
+        plt.legend(scatterpoints=1, frameon=False,
+                   labelspacing=1, loc='lower left')
         plt.show()

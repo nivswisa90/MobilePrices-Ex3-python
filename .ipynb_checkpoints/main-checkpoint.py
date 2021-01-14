@@ -1,6 +1,6 @@
 from task1 import *
 
-# price2 = price - (price/20)
+
 def main():
     suma = Summary("mobile_price_1.csv")
     suma.addResolution()
@@ -16,9 +16,9 @@ def main():
     suma.ordinalToNumerical()
     suma.nominalToBinary()
     # suma.dataHeatMap()
-    # suma.saveIntoCsvFile()
+    suma.saveIntoCsvFile()
     # suma.relationshipBetweenFourFeatures('price', 'battery_power', 'px_height', 'px_width')
-    suma.plotRelationshipBetweenWidthHeightPriceCore()
+    suma.testFunc()
 
 
 if __name__ == '__main__':
