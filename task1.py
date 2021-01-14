@@ -136,6 +136,7 @@ class Summary:
         print(self.csv)
 
     def deleteRedundantIndex(self):
+        # Delete the redundant index on dataframe
         del self.csv['bluetooth']
         del self.csv['screen']
         del self.csv['sim']
@@ -146,7 +147,5 @@ class Summary:
 
     def saveIntoCsvFile(self):
         # write the data frame into a csv file
-        # Check what to delete
-
         self.deleteRedundantIndex()
         self.csv.to_csv('mobile_prices_converted.csv', sep=',')
