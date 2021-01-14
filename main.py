@@ -12,13 +12,12 @@ def main():
     # suma.printDescription()
     # suma.getPricesHistogram()
     # suma.dataHeatMap()
-    # suma.getCategoricalCorrelation('bluetooth')
     # suma.plotRelationshipWithPrice('resolution')
     # suma.threeCorrelatedFeatures()
     suma.ordinalToNumerical()
     suma.nominalToBinary()
-    suma.dataHeatMap()
-    # suma.saveIntoCsvFile()
+    # suma.dataHeatzMap()
+    suma.saveIntoCsvFile()
 
 
 if __name__ == '__main__':

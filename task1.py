@@ -138,9 +138,18 @@ class Summary:
         self.csv[str(screen.columns.array[0]) + '_bin'] = screen
         print(self.csv)
 
+    def deleteRedundantIndex(self):
+        del self.csv['bluetooth']
+        del self.csv['screen']
+        del self.csv['sim']
+        del self.csv['speed']
+        del self.csv['gen']
+        del self.csv['cores']
+        del self.csv['wifi']
+
     def saveIntoCsvFile(self):
         # write the data frame into a csv file
         # Check what to delete
-        # del self.csv['bluetooth']
-        # del self.csv['screen']
+
+        self.deleteRedundantIndex()
         self.csv.to_csv('mobile_prices_converted.csv', sep=',')
