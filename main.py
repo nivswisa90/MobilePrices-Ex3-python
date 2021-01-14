@@ -13,11 +13,11 @@ def main():
     # suma.getPricesHistogram()
     # suma.dataHeatMap()
     # suma.plotRelationshipWithPrice('resolution')
-    # suma.threeCorrelatedFeatures()
-    suma.ordinalToNumerical()
-    suma.nominalToBinary()
-    # suma.dataHeatzMap()
-    suma.saveIntoCsvFile()
+    suma.threeCorrelatedFeatures()
+    # suma.ordinalToNumerical()
+    # suma.nominalToBinary()
+    # suma.dataHeatMap()
+    # suma.saveIntoCsvFile()
 
 
 if __name__ == '__main__':

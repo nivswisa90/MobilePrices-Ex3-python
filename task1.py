@@ -81,16 +81,13 @@ class Summary:
         plt.show()
 
     def threeCorrelatedFeatures(self):
-        #Need to check again
+        # Select 3 features(ram, battery_power and gen) that are correlated with price and create a pivot table showing
+        # average price with relation to cross sections of those 3 features
         ram = pd.qcut(self.csv['ram'], 4)
         battery = pd.qcut(self.csv['battery_power'], 4)
-        pivot = self.csv.pivot_table(index=[battery, 'battery_power'], columns=['gen'],
-                                     aggfunc={'price': 'mean', 'ram': 'sum'})
-        # , 'gen', ['battery_power',battery])
+        pivot = self.csv.pivot_table(index='gen', columns=[battery, ram],
+                                     aggfunc={'price': 'mean'})
         print(pivot.unstack())
-
-        # titanic.pivot_table(index='Sex', columns='Pclass',
-        #                     aggfunc={'Survived': sum, 'Fare': 'mean'})
 
     def ordinalToNumerical(self):
         # For each ordinal feature <O>, add a column to the dataframe which holds the ordered values
