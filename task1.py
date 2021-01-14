@@ -19,8 +19,6 @@ class Summary:
     def dotsPerInch(self):
         # Add a column that holds the DPI (dots per inch) of the screen width and name it DPI_w.
         self.csv['sc_w'] = (self.csv['px_width'] / self.csv['sc_w']).replace(np.inf, np.nan) * 2.54
-        # with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-        #     print(self.csv['sc_w'])
 
     def callRatio(self):
         # Add a column that holds the ratio battery_power/talk_time and name it call_ratio
@@ -32,13 +30,15 @@ class Summary:
 
     def printDescription(self):
         # Show table description
-        with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-            print(self.csv.describe())
+        print(self.csv.describe())
 
     def getPricesHistogram(self):
         # Prices histogram
         values = self.csv['price']
         plt.hist(values, bins=15)
+        plt.title('Price histogram')
+        plt.xlabel("Price")
+        plt.ylabel("Sum")
         plt.show()
 
     def dataHeatMap(self):
@@ -48,17 +48,19 @@ class Summary:
         cmap = sns.diverging_palette(200, 10, as_cmap=True)
         sns.heatmap(corr, mask=mask, cmap=cmap, center=0,
                     square=True, linewidths=.5)
+        plt.savefig('plt.png')
         plt.show()
 
-    def getCategoricalCorrelation(self, features):
+    def getCategoricalCorrelation(self, feature):
         # Checks if a categorical feature has correlation with the price
-        csv_oh = pd.concat([self.csv, pd.get_dummies(self.csv[features])], axis=1)
+        csv_oh = pd.concat([self.csv, pd.get_dummies(self.csv[feature])], axis=1)
         corr = csv_oh.corr()
         mask = np.triu(np.ones_like(corr, dtype=bool))
-        # f, ax = plt.subplots(figsize=(7, 6))
         cmap = sns.diverging_palette(200, 10, as_cmap=True)
         sns.heatmap(corr, mask=mask, cmap=cmap, center=0,
                     square=True, linewidths=.5)
+        plt.title("Categorical correlation with "+ feature)
+        plt.savefig(str(feature) + '-catCorr')
         plt.show()
 
     def plotRelationshipWithPrice(self, feature):
@@ -75,7 +77,7 @@ class Summary:
         battery = pd.qcut(self.csv['battery_power'], 4)
         pivot = self.csv.pivot_table(index='gen', columns=[battery, ram],
                                      aggfunc={'price': 'mean'})
-        # print(pivot.unstack())
+        print(pivot.unstack())
 
     def ordinalToNumerical(self):
         # For each ordinal feature <O>, add a column to the dataframe which holds the ordered values
@@ -111,7 +113,6 @@ class Summary:
                              ordered=True,
                              categories=sim_dict)
         self.csv['sim_ord'] = sim.codes
-        # print(self.csv)
 
     def nominalToBinary(self):
         # For each nominal feature <N>, add a binary column OR one-hot encoding to the dataframe
@@ -121,7 +122,6 @@ class Summary:
 
         screen = pd.get_dummies(self.csv.screen, prefix='screen',drop_first=True)
         self.csv[str(screen.columns.array[0]) + '_bin'] = screen
-        # print(self.csv)
 
     def deleteRedundantIndex(self):
         # Delete the redundant index on dataframe
@@ -158,3 +158,24 @@ class Summary:
         plt.ylabel('pixel_height')
         plt.colorbar(label='price')
         plt.show()
+
+    def getConclusions(self):
+        csv2 = pd.read_csv('mobile_price_2.csv')
+
+        # New column with relation between prices
+        self.csv['newPriceRel'] = csv2.price_2 / self.csv.price
+        plt.figure()
+        plt.scatter(csv2.id, self.csv['newPriceRel'])
+        plt.xlabel('id')
+        plt.ylabel('newPriceRel')
+        plt.title("Relationship between price_2 and price")
+        plt.savefig('conclusion')
+        plt.grid()
+        plt.show()
+
+        # See correlation between prices relationship and rest of the columns
+        self.dataHeatMap()
+
+
+        # with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+        #     print(self.csv)
