@@ -59,15 +59,15 @@ class Summary:
         cmap = sns.diverging_palette(200, 10, as_cmap=True)
         sns.heatmap(corr, mask=mask, cmap=cmap, center=0,
                     square=True, linewidths=.5)
-        plt.title("Categorical correlation with "+ feature)
-        plt.savefig(str(feature) + '-catCorr')
+        plt.title("Categorical correlation with " + feature)
+        # plt.savefig(str(feature) + '-catCorr')
         plt.show()
 
     def plotRelationshipWithPrice(self, feature):
         # For each feature correlated with the price, plot its relationship with price
         sns.regplot(x=feature, y="price", data=self.csv, scatter_kws={"color": "black"}, line_kws={"color": "red"})
         plt.title("price " + feature + " relationship")
-        plt.savefig('plot.png')
+        # plt.savefig('plot.png')
         plt.show()
 
     def threeCorrelatedFeatures(self):
@@ -159,23 +159,19 @@ class Summary:
         plt.colorbar(label='price')
         plt.show()
 
-    def getConclusions(self):
+    def getConclusionsAboutPrice(self):
+        # Check which feature was used to transform the price
         csv2 = pd.read_csv('mobile_price_2.csv')
 
         # New column with relation between prices
         self.csv['newPriceRel'] = csv2.price_2 / self.csv.price
         plt.figure()
-        plt.scatter(csv2.id, self.csv['newPriceRel'])
-        plt.xlabel('id')
+        plt.scatter(self.csv.camera, self.csv.newPriceRel)
+        plt.xlabel('camera')
         plt.ylabel('newPriceRel')
-        plt.title("Relationship between price_2 and price")
-        plt.savefig('conclusion')
-        plt.grid()
+        plt.title("Relationship between price_2 and price for camera")
+        plt.savefig('fig.png')
         plt.show()
 
         # See correlation between prices relationship and rest of the columns
         self.dataHeatMap()
-
-
-        # with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-        #     print(self.csv)

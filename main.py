@@ -1,4 +1,4 @@
-from task1 import *
+from summary import *
 
 
 def main():
@@ -20,7 +20,7 @@ def main():
     # suma.saveIntoCsvFile()
     # suma.relationshipBetweenFourFeatures('price', 'battery_power', 'px_height', 'px_width')
     # suma.plotRelationshipBetweenWidthHeightPriceCore()
-    suma.getConclusions()
+    suma.getConclusionsAboutPrice()
 
 
 if __name__ == '__main__':
